@@ -29,7 +29,9 @@ public class TodosServiceImpl implements TodosService{
 
   @Override
   public void markComplete(long todoid) {
-
+    Todos todos = findUserById(todoid);
+    todos.setCompleted(true);
+    todosRepos.save(todos);
   }
 
   @Override

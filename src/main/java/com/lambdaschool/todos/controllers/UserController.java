@@ -94,7 +94,7 @@ public class UserController
             .toUri();
         responseHeaders.setLocation(newUserURI);
 
-        return new ResponseEntity<>(null,
+        return new ResponseEntity<>(newuser,
             responseHeaders,
             HttpStatus.CREATED);
     }
@@ -121,6 +121,7 @@ public class UserController
      *
      * @return List of usernames, count of non completed tasks
      */
+    //http://localhost:2019/users/users/todos
     @GetMapping(value = "/users/todos",
         produces = {"application/json"})
     public ResponseEntity<?> getUserNameCountTodos()
@@ -135,7 +136,7 @@ public class UserController
     public ResponseEntity<?> updateUser(@RequestBody User updateUser,
                                         @PathVariable long id){
         userService.update(updateUser, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(updateUser, HttpStatus.OK);
     }
 
 }

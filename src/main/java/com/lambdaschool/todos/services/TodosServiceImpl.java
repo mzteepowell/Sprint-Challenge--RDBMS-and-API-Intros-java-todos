@@ -39,14 +39,16 @@ public class TodosServiceImpl implements TodosService{
 
     Todos currentTodo = findUserById(id);
 
-    if (todos.getDescription() != null){
-      currentTodo.setDescription(todos.getDescription());
-    }
-
     //ManyToOne
     if (todos.getUser() != null) {
       todos.setUser(userService.findUserById(todos.getUser().getUserid()));
     }
+
+
+    if (todos.getDescription() != null){
+      currentTodo.setDescription(todos.getDescription());
+    }
+
     return todosRepos.save(currentTodo);
   }
 }

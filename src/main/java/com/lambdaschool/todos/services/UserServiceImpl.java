@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
         newUser.getTodos().clear();
         for (Todos t : user.getTodos()) {
-            newUser.getTodos().add(new Todos(t.getUser(), t.getDescription()));
+            newUser.getTodos().add(new Todos(newUser, t.getDescription()));
         }
         return userrepos.save(newUser);
     }
@@ -81,7 +81,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserNameCountTodos> getCountUserTodos()
     {
-        return null;
+        List<UserNameCountTodos> rtnList = userrepos.getCountUserTodos();
+        return rtnList;
     }
 
     @Override
@@ -109,6 +110,10 @@ public class UserServiceImpl implements UserService {
                 currentUser.getTodos().add(new Todos(currentUser, t.getDescription()));
             }
         }
+
+        userrepos.updateUserName(userAuditing.getCurrentAuditor().get(),
+                                 id, user.getUsername());
+
         return userrepos.save(currentUser);
     }
 }

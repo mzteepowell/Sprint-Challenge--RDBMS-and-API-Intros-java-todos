@@ -35,6 +35,7 @@ public class UserController
      * @return JSON list of all users with a status of OK
      * @see UserService#findAll() UserService.findAll()
      */
+//    http://localhost:2019/users/users
     @GetMapping(value = "/users",
         produces = {"application/json"})
     public ResponseEntity<?> listAllUsers()
@@ -52,6 +53,8 @@ public class UserController
      * @return JSON object of the user you seek
      * @see UserService#findUserById(long) UserService.findUserById(long)
      */
+    //http://localhost:2019/users/user/4
+    //http://localhost:2019/users/user/12
     @GetMapping(value = "/user/{userId}",
         produces = {"application/json"})
     public ResponseEntity<?> getUserById(
@@ -72,6 +75,7 @@ public class UserController
      * @throws URISyntaxException Exception if something does not work in creating the location header
      * @see UserService#save(User) UserService.save(User)
      */
+    //POST http://localhost:2019/users/user
     @PostMapping(value = "/user",
         consumes = {"application/json"})
     public ResponseEntity<?> addNewUser(
@@ -102,6 +106,7 @@ public class UserController
      * @param id the primary key of the user you wish to delete
      * @return Status of OK
      */
+    //DELETE http://localhost:2019/users/user/10
     @DeleteMapping(value = "/user/{id}")
     public ResponseEntity<?> deleteUserById(
         @PathVariable
@@ -124,4 +129,13 @@ public class UserController
         return new ResponseEntity<>(myList,
             HttpStatus.OK);
     }
+
+    //PATCH http://localhost:2019/users/user/6
+    @PatchMapping(value = "/user/{id}", consumes = "application/json")
+    public ResponseEntity<?> updateUser(@RequestBody User updateUser,
+                                        @PathVariable long id){
+        userService.update(updateUser, id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

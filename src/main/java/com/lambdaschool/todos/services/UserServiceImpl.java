@@ -1,5 +1,6 @@
 package com.lambdaschool.todos.services;
 
+import com.lambdaschool.todos.models.Todos;
 import com.lambdaschool.todos.models.User;
 import com.lambdaschool.todos.repository.UserRepository;
 import com.lambdaschool.todos.views.UserNameCountTodos;
@@ -16,8 +17,7 @@ import java.util.List;
  */
 @Transactional
 @Service(value = "userService")
-public class UserServiceImpl implements UserService
-{
+public class UserServiceImpl implements UserService {
     /**
      * Connects this service to the User table.
      */
@@ -71,6 +71,10 @@ public class UserServiceImpl implements UserService
         newUser.setPrimaryemail(user.getPrimaryemail()
             .toLowerCase());
 
+        newUser.getTodos().clear();
+        for (Todos t : user.getTodos()) {
+            newUser.getTodos().add(new Todos(t.getUser(), t.getDescription()));
+        }
         return userrepos.save(newUser);
     }
 
@@ -78,5 +82,33 @@ public class UserServiceImpl implements UserService
     public List<UserNameCountTodos> getCountUserTodos()
     {
         return null;
+    }
+
+    @Override
+    public User update(
+        User user,
+        Long id) {
+
+        User currentUser = findUserById(id);
+
+        if (user.getUsername() != null) {
+            currentUser.setUsername(user.getUsername().toLowerCase());
+        }
+        if (user.getPassword() != null){
+            currentUser.setPassword(user.getPassword());
+        }
+        if (user.getPrimaryemail() != null) {
+            currentUser.setPrimaryemail(user.getPrimaryemail());
+        }
+
+        //Todos List
+        if (user.getTodos().size() > 0) {
+            currentUser.getTodos().clear();
+
+            for (Todos t : user.getTodos()){
+                currentUser.getTodos().add(new Todos(currentUser, t.getDescription()));
+            }
+        }
+        return userrepos.save(currentUser);
     }
 }

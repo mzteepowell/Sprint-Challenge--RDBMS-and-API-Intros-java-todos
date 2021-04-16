@@ -37,4 +37,6 @@ public class TodosController
         todosService.markComplete(todoid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    //PATCH http://localhost:2019/todos/todo/6
 }
